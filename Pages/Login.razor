@@ -1,27 +1,70 @@
 @page "/login"
 
-@inject NavigationManager NavigationManager
-
-<div class="text-center">
-    <h3 class="mb-3">Login</h3>
-    <form class="form-signin">
-        <div class="form-group">
-            <label for="username" class="sr-only">Username:</label>
-            <input id="username" class="form-control" placeholder="Username" required autofocus />
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3 class="mb-3 text-center">Login</h3>
+            <form>
+                <div class="form-group mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input id="username" class="form-control" placeholder="Username" required />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input id="password" class="form-control" placeholder="Password" required type="password" />
+                </div>
+                <button class="btn btn-primary w-100 mb-3" type="submit">Login</button>
+                <button class="btn btn-primary w-100 mb-3" @onclick="OpenRegisterModal">Don't have an account? Sign up!</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="password" class="sr-only">Password:</label>
-            <input id="password" class="form-control" placeholder="Password" required type="password" />
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-        <button class="btn btn-lg btn-secondary btn-block" @onclick="GoToRegisterPage">Register</button>
-    </form>
+    </div>
 </div>
 
-@code {
-    private void GoToRegisterPage()
-    {
-        NavigationManager.NavigateTo("/register");
 
+@if (IsRegisterModalOpen)
+{
+    <div class="modal" tabindex="-1" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register</h5>
+                    <button type="button" class="btn-close" @onclick="CloseRegisterModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                <div class="form-group mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input id="username" class="form-control" placeholder="Username" required />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input id="email" class="form-control" placeholder="Email" required type="email" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input id="password" class="form-control" placeholder="Password" required type="password" />
+                </div>
+            </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseRegisterModal">Close</button>
+                    <button type="button" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    bool IsRegisterModalOpen = false;
+
+    void OpenRegisterModal()
+    {
+        IsRegisterModalOpen = true;
+    }
+
+    void CloseRegisterModal()
+    {
+        IsRegisterModalOpen = false;
     }
 }
