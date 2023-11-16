@@ -17,7 +17,7 @@ button {
 .sidebar {
     flex: 1;
 }
-nav, .card-header {
+nav {
     background-color: #D9D9D9;
 }
 
