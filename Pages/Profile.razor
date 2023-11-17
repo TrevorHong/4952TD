@@ -1,0 +1,20 @@
+@page "/profile"
+@inject NavigationManager NavigationManager
+
+<button type="button" class="btn btn-primary mb-2" @onclick="goToMainMenu">Back</button>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h1>Username</h1>
+        <p class="card-text">Damage: 0</p>
+        <p class="card-text">Highest Round: 0</p>
+        <p class="card-text">Gold Spent: 0</p>
+        <p class="card-text">Towers Bought: 0</p>
+    </div>
+</div>
+
+@code {
+    private void goToMainMenu()
+    {
+        NavigationManager.NavigateTo("/mainmenu");
+    }
+}

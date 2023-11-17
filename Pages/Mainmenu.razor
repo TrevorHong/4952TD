@@ -1,0 +1,32 @@
+@page "/mainmenu"
+@inject NavigationManager NavigationManager
+
+<div class="d-flex justify-content-end align-items-center" style="height: 25vh;"></div>
+    <div class="card text-center" style="width: 18rem;">
+    <div class="card-body">
+        <h1>BlazorTD</h1>
+        <p><button type="button" class="btn btn-primary mb-2" @onclick="goToGame">Start Game</button></p>
+        <p><button type="button" class="btn btn-secondary mb-2" @onclick="goToProfile">Your Profile</button></p>
+        <p><button type="button" class="btn btn-success mb-2" @onclick="goToLeaderboard">Leaderboard</button></p>
+        <p> <button type="button" class="btn btn-danger mb-2" @onclick="goToLogin">Log out</button></p>
+    </div>
+</div>
+
+@code {
+    private void goToLeaderboard()
+    {
+        NavigationManager.NavigateTo("/leaderboard");
+    }
+    private void goToGame()
+    {
+        NavigationManager.NavigateTo("/Game");
+    }
+    private void goToProfile()
+    {
+        NavigationManager.NavigateTo("/profile");
+    }
+    private void goToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}

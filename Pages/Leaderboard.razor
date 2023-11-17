@@ -1,6 +1,8 @@
 ﻿@page "/leaderboard"
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 
+<button type="button" class="btn btn-primary mb-2" @onclick="goToMainMenu">Back</button>
 <div class="container py-5">
     <h1 class="text-center mb-2">Leaderboard</h1>
 
@@ -53,5 +55,9 @@
         public string? Summary { get; set; }
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+    private void goToMainMenu()
+    {
+        NavigationManager.NavigateTo("/mainmenu");
     }
 }
