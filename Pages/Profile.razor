@@ -1,16 +1,34 @@
 @page "/profile"
 @inject NavigationManager NavigationManager
 
-<button type="button" class="btn btn-primary mb-2" @onclick="goToMainMenu">Back</button>
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h1>Username</h1>
-        <p class="card-text">Damage: 0</p>
-        <p class="card-text">Highest Round: 0</p>
-        <p class="card-text">Gold Spent: 0</p>
-        <p class="card-text">Towers Bought: 0</p>
-    </div>
-</div>
+<div class="section bg">
+    <div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<button type="button" class="btn btn mb-2" @onclick="goToMainMenu">Back</button>
+					<div class="section pb-5 pt-5 pt-sm-2 text-center">
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+								<div class="card-front">
+									<div class="center-wrap">
+										<div class="section text-center">
+                                            <div class="card-body">
+                                                <h1 class="yellow-text">Username</h1>
+                                                <p class="yellow-text">Damage: 0</p>
+                                                <p class="yellow-text">Highest Round: 0</p>
+                                                <p class="yellow-text">Gold Spent: 0</p>
+                                                <p class="yellow-text">Towers Bought: 0</p>
+                                            </div>
+				      					</div>
+			      					</div>
+			      				</div>
+			      			</div>
+			      		</div>
+			      	</div>
+		      	</div>
+	      	</div>
+	    </div>
+	</div>
 
 @code {
     private void goToMainMenu()

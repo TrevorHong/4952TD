@@ -1,14 +1,25 @@
 @page "/mainmenu"
 @inject NavigationManager NavigationManager
 
-<div class="d-flex justify-content-end align-items-center" style="height: 25vh;"></div>
-    <div class="card text-center" style="width: 18rem;">
-    <div class="card-body">
-        <h1>BlazorTD</h1>
-        <p><button type="button" class="btn btn-primary mb-2" @onclick="goToGame">Start Game</button></p>
-        <p><button type="button" class="btn btn-secondary mb-2" @onclick="goToProfile">Your Profile</button></p>
-        <p><button type="button" class="btn btn-success mb-2" @onclick="goToLeaderboard">Leaderboard</button></p>
-        <p> <button type="button" class="btn btn-danger mb-2" @onclick="goToLogin">Log out</button></p>
+<div class="section bg">
+    <div class="container">
+    <div class="row full-height justify-content-center">
+		<div class="col-12 text-center align-self-center py-5">
+			<div class="section pb-5 pt-5 pt-sm-2 text-center">
+                <img src="images/Logo.png" alt="Logo">
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+                            <div class="card-body">
+                                <p><button type="button" class="btn btn mb-2" @onclick="goToGame">Start Game</button></p>
+                                <p><button type="button" class="btn btn mb-2" @onclick="goToProfile">Your Profile</button></p>
+                                <p><button type="button" class="btn btn mb-2" @onclick="goToLeaderboard">Leaderboard</button></p>
+                                <p><button type="button" class="btn btn mb-2" @onclick="goToLogin">Log out</button></p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 
