@@ -17,12 +17,12 @@ button {
 }
 #headingFive {
     background-color: #79f55a;
-    bottom: 0;
 }
 .sidebar {
     flex: 1;
 }
 nav {
+    margin-left: auto;
     background-color: #D9D9D9;
 }
 
@@ -35,11 +35,18 @@ nav {
     text-align: center;
 }
 
+#gameContainer {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+}
+
 svg {
     border: 1px solid black;
     background-color: #b4d4b4
 }
 
 #startbutton {
-    bottom: 0;
+    margin-left: auto;
+    align-self: flex-end;
 }
