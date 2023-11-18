@@ -4,9 +4,13 @@
 
 <h1>Hello, world!</h1>
 
-<div id="gameContainer">
-    <svg tabindex="0" height="80vh" width="72vw">
+<div id="gameContainer" @onclick="GenerateNewObject">
+    <svg tabindex="0" height="80vh" width="72vw" @onmousemove="MouseMoved">
         <rect x="@x" y="@y" height="50" width="50"></rect>
+        @foreach (var gameObj in objects)
+        {
+            <rect tabindex="1" x="@gameObj.X" y="@gameObj.Y" height="50" width="50"></rect>
+        }
     </svg>
 
     <nav class="collapse d-lg-block sidebar right-sidebar-menu consistent-header-parent" id="navbar">
@@ -16,7 +20,7 @@
                     Towers
                 </h5>
             </div>
-            <div class="card-header btn btn-link collapsed" id="headingOne" >
+            <div class="card-header btn btn-link collapsed" id="headingOne" @onclick="StartMouseMovement">
              <h5 class="mb-0">
                 <button class="btn btn-link collapsed">
                 Melee
@@ -43,24 +47,35 @@
                 Bomb
                 </button>
             </h5>
-            </div>      
-        </div>
-        <div class="card-header btn btn-link collapsed" id="headingFive">
-             <h5 class="mb-0" id="startbutton">
+            </div>    
+
+            <div class="card-header btn btn-link collapsed" id="headingFive">
+                <h5 class="mb-0" id="startbutton">
                 <button class="btn btn-link collapsed">
                 Start
                 </button>
-        </h5>
-        </div>       
+            </h5>
+            </div>      
+        </div>   
     </nav>
+
 </div>
 @code {
+
+    class GameObject
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+    }
+    List<GameObject> objects = new List<GameObject>();
     float[] xPosition = { 50, 100, 100, 150, 150, 200 , 250, 500, 1000, 1000};
     float[] yPosition = { 50, 50, 100, 100, 50, 50, 50, 50 ,50, 0};
 
     float x = 50;
     float y = 50;
     int index = 0;
+
+    bool isMouseMovementActive = false;
     
     float factor = 0.01f;
 
@@ -95,25 +110,27 @@
     float Interpolation(float start, float end, float t) {
         return start + t * (end - start);
     }
-
-    // Dispose the timer when the component is disposed
-    /*Task Move(KeyboardEventArgs e) {
-        switch(e.Key) {
-            case "ArrowDown":
-                y++;
-                break;
-            case "ArrowUp":
-                y--;
-                break;
-            case "ArrowLeft":
-                x--;
-                break;
-            case "ArrowRight":
-                x++;
-                break;
-            default:
-                break;
+    void MouseMoved(MouseEventArgs e)
+    {
+        if(isMouseMovementActive) {
+            x = (float)e.ClientX;
+            y = (float)e.ClientY;
+            StateHasChanged();
         }
-        return Task.CompletedTask;
-    }*/
+    }
+    void StartMouseMovement()
+    {
+        isMouseMovementActive = !isMouseMovementActive;
+    }
+
+    void GenerateNewObject(MouseEventArgs e)
+    {
+        var newObject = new GameObject
+        {
+            X = (float)e.ClientX,
+            Y = (float)e.ClientY
+        };
+        objects.Add(newObject);
+        StateHasChanged();
+    }
 }
