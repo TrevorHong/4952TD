@@ -6,10 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 // builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<UserAuthentication>();
 
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// builder.Services.AddDbContext<SchoolDbContext>(option => option.UseMySql(connectionString,serverVersion));
+builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseMySql(connectionString,serverVersion));
 
 var app = builder.Build();
 
@@ -32,8 +33,18 @@ app.MapFallbackToPage("/_Host");
 
 using (var scope = app.Services.CreateScope()) {
     var services = scope.ServiceProvider;
-    // var context = services.GetRequiredService<SchoolDbContext>();    
-    // context.Database.Migrate();
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        context.Database.OpenConnection();
+        context.Database.CloseConnection();
+        Console.WriteLine("Successfully connected to the database.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Failed to connect to the database.");
+        Console.WriteLine(ex.Message);
+    }
 }
 
 app.Run();
