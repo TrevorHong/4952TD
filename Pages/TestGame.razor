@@ -1,0 +1,82 @@
+@page "/TestGame"
+@inject EnemySpawner enemySpawner
+
+<div id="gameContainer">
+    <svg @onmousemove="UpdateTowerPosition" @onmouseup="PlaceTower" tabindex="0" height="80vh" width="72vw">
+        @if (isAddingTower)
+        {
+            <rect x="@currentTower.X" y="@currentTower.Y" height="50" width="50"></rect>
+        }
+        @foreach (var tower in towers)
+        {
+            <rect x="@tower.X" y="@tower.Y" height="50" width="50"></rect>
+        }
+        @foreach (var enemy in enemySpawner.GetEnemies())
+        {
+            <rect x="@enemy.Position.X" y="@enemy.Position.Y" height="30" width="30" fill="red"></rect>
+
+        }
+        <polyline points="@string.Join(" ", path.Select(p => $"{p.X},{p.Y}"))" fill="none" stroke="black" />
+    </svg>
+</div>
+
+<button @onclick="StartAddingTower">Add Tower</button>
+
+@code {
+    private List<Tower> towers = new List<Tower>();
+    private Tower currentTower = new Tower();
+    private bool isAddingTower = false;
+    private List<Point> path = new List<Point>
+    {
+        new Point { X = 10, Y = 40 },
+        new Point { X = 175, Y = 40 },
+        new Point { X = 175, Y = 200 },
+        new Point { X = 50, Y = 200 },
+        new Point { X = 50, Y = 400 },
+        new Point { X = 175, Y = 400 },
+        new Point { X = 175, Y = 500 },
+        new Point { X = 175, Y = 500 },
+        new Point { X = 375, Y = 500 },
+        new Point { X = 375, Y = 200 },
+        new Point { X = 575, Y = 200 }
+    };
+    private int currentTime = 0;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            while (true)
+            {
+                await Task.Delay(1000); // Update the game state every second
+                currentTime += 1000;
+                await enemySpawner.Update(currentTime, path);
+                enemySpawner.CheckCollisions(towers);
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void StartAddingTower()
+    {
+        isAddingTower = true;
+    }
+
+    private void UpdateTowerPosition(MouseEventArgs e)
+    {
+        if (isAddingTower)
+        {
+            currentTower.X = (int)e.ClientX;
+            currentTower.Y = (int)e.ClientY;
+        }
+    }
+
+    private void PlaceTower()
+    {
+        if (isAddingTower)
+        {
+            towers.Add(new Tower { X = currentTower.X, Y = currentTower.Y });
+            isAddingTower = false;
+        }
+    }
+}
