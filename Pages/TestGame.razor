@@ -83,7 +83,8 @@
                 await Task.Delay(1000); // Update the game state every second
                 currentTime += 1000;
                 await enemySpawner.Update(currentTime, path);
-                enemySpawner.CheckCollisions(towers);
+                enemySpawner.CheckMeleeCollisions(meleeTowers);
+                enemySpawner.CheckBombCollisions(bombTowers);
                 StateHasChanged();
             }
         }

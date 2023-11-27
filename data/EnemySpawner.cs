@@ -56,12 +56,12 @@ public class EnemySpawner
     }
 }
 
-public void CheckCollisions(List<Tower> towers)
+public void CheckMeleeCollisions(List<MeleeTower> meleeTowers)
 {
     for (int i = enemies.Count - 1; i >= 0; i--)
     {
         var enemy = enemies[i];
-        foreach (var tower in towers)
+        foreach (var tower in meleeTowers)
         {
             var dx = tower.X - enemy.Position.X;
             var dy = tower.Y - enemy.Position.Y;
@@ -69,6 +69,27 @@ public void CheckCollisions(List<Tower> towers)
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
                 enemies.RemoveAt(i);
+                break;
+            }
+        }
+    }
+}
+
+public void CheckBombCollisions(List<BombTower> bombTowers)
+{
+    for (int i = enemies.Count - 1; i >= 0; i--)
+    {
+        var enemy = enemies[i];
+        for (int j = bombTowers.Count - 1; j >= 0; j--)
+        {
+            var tower = bombTowers[j];
+            var dx = tower.X - enemy.Position.X;
+            var dy = tower.Y - enemy.Position.Y;
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+            if (distance < 50) // Assuming the size of the tower and enemy is 50
+            {
+                enemies.RemoveAt(i);
+                bombTowers.RemoveAt(j);
                 break;
             }
         }
