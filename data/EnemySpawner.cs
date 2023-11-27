@@ -4,24 +4,30 @@ using System.Threading.Tasks;
 public class EnemySpawner
 {
     private List<Enemy> enemies = new List<Enemy>();
-    private int spawnInterval = 10000; // Spawn an enemy every 10 seconds
+    private int spawnInterval = 5000; // Spawn an enemy every 5 seconds
     private int lastSpawnTime = 0;
+
+    float speed = 2.50f;
+
+    public int Currency { get; set; }
 
     public List<Enemy> GetEnemies()
     {
         return enemies;
     }
 
-    public async Task Update(int currentTime, List<Point> path)
+    public List<Enemy> Update(int currentTime, List<Point> path)
     {
         if (currentTime - lastSpawnTime >= spawnInterval)
         {
-            var enemy = new Enemy { Position = path[0], PathIndex = 0, Speed = 1 }; // Modify this line
+            var enemy = new Enemy { Position = path[0], PathIndex = 0, Speed = speed }; // Modify this line
             enemies.Add(enemy);
             lastSpawnTime = currentTime;
         }
 
         MoveEnemies(path);
+
+        return enemies;
     }
 
     private void MoveEnemies(List<Point> path)
@@ -56,6 +62,7 @@ public class EnemySpawner
     }
 }
 
+
 public void CheckMeleeCollisions(List<MeleeTower> meleeTowers)
 {
     for (int i = enemies.Count - 1; i >= 0; i--)
@@ -69,6 +76,7 @@ public void CheckMeleeCollisions(List<MeleeTower> meleeTowers)
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
                 enemies.RemoveAt(i);
+                Currency += 5;
                 break;
             }
         }
@@ -89,7 +97,28 @@ public void CheckBombCollisions(List<BombTower> bombTowers)
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
                 enemies.RemoveAt(i);
+                Currency += 5;
                 bombTowers.RemoveAt(j);
+                break;
+            }
+        }
+    }
+}
+
+public void CheckStunCollisions(List<StunTower> stunTowers, int currentTime)
+{
+    for (int i = enemies.Count - 1; i >= 0; i--)
+    {
+        var enemy = enemies[i];
+        foreach (var tower in stunTowers)
+        {
+            var dx = tower.X - enemy.Position.X;
+            var dy = tower.Y - enemy.Position.Y;
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+            if (distance < 50) // Assuming the size of the tower and enemy is 50
+            {
+                enemy.Stunned = true;
+                enemy.StunEndTime = currentTime + 20000; // 3 seconds from now
                 break;
             }
         }
