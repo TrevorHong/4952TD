@@ -1,5 +1,6 @@
 @page "/login"
 @inject NavigationManager NavigationManager
+@inject UserAuthentication UserAuth
 
 <div class="section bg">
     <div class="container">
@@ -17,12 +18,12 @@
 										<div class="section text-center">
 											<h4 class="mb-4 pb-3 yellow-text">Log In</h4>
 											<div class="form-group">
-												<input type="text" name="logname" class="form-style" placeholder="Your Username" id="logname" autocomplete="off">
+												<input type="text" name="logname" class="form-style" placeholder="Your Username" id="logname" autocomplete="off" @bind="username">
 											</div>	
 											<div class="form-group mt-2">
-												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off" @bind="password">
 											</div>
-											<a @onclick="HandleLogin" class="btn mt-4">Login</a>
+											@* <a @onclick="HandleLogin" class="btn mt-4">Login</a> *@
                             				@* <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p> *@
 				      					</div>
 			      					</div>
@@ -32,13 +33,13 @@
 										<div class="section text-center">
 											<h4 class="mb-4 pb-3 yellow-text">Sign Up</h4>
 											<div class="form-group">
-												<input type="text" name="logname" class="form-style" placeholder="Your Username" id="logname" autocomplete="off">
+												<input type="text" name="registerUsername" class="form-style" placeholder="Your Username" id="registerUsername" autocomplete="off" @bind="registerUsername">
 											</div>	
 											<div class="form-group mt-2">
-												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
+												<input type="email" name="email" class="form-style" placeholder="Your Email" id="email" autocomplete="off" @bind="email">
 											</div>	
 											<div class="form-group mt-2">
-												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+												<input type="password" name="registerPassword" class="form-style" placeholder="Your Password" id="registerPassword" autocomplete="off" @bind="registerPassword">
 											</div>
 											<a class="btn mt-4">Sign up</a>
 				      					</div>
@@ -53,8 +54,45 @@
 	</div>
 
 @code {
-    private void HandleLogin()
+    private string username;
+    private string password;
+
+	private string email;
+
+	private string registerUsername;
+
+	private string registerPassword;
+
+    private void HandleRegister()
     {
-        NavigationManager.NavigateTo("/mainmenu");
+    if (UserAuth.IsUserExists(registerUsername))
+    {
+        // Show an error message
     }
+    else
+    {
+        bool isRegistered = UserAuth.Register(registerUsername, registerPassword, email);
+        if (isRegistered)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            // Show an error message
+        }
+    }
+}
+
+    @* private void HandleLogin()
+    {
+        bool isLoggedIn = UserAuth.Login(username, password);
+        if (isLoggedIn)
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            // Show an error message
+        }
+    } *@
 }

@@ -1,0 +1,178 @@
+@page "/TestGame"
+@inject EnemySpawner enemySpawner
+
+<div id="gameContainer">
+    <p>Currency: @enemySpawner.Currency</p>
+    <svg @onmousemove="UpdateTowerPosition" @onmouseup="PlaceTower" tabindex="0" height="80vh" width="72vw">  
+        @if (isAddingTower)
+        {
+            <rect x="@currentTower.X" y="@currentTower.Y" height="50" width="50"></rect>
+        }
+        @foreach (var tower in meleeTowers)
+        {
+            <rect x="@tower.X" y="@tower.Y" height="50" width="50" @onclick="() => SelectTower(tower)"></rect>
+        }
+        @foreach (var tower in rangedTowers)
+        {
+            <rect x="@tower.X" y="@tower.Y" height="50" width="50" fill="green" @onclick="() => SelectTower(tower)"></rect>
+        }
+        @foreach (var tower in stunTowers)
+        {
+            <rect x="@tower.X" y="@tower.Y" height="50" width="50" fill="yellow" @onclick="() => SelectTower(tower)"></rect>
+        }
+        @foreach (var tower in bombTowers)
+        {
+            <rect x="@tower.X" y="@tower.Y" height="50" width="50" fill="blue" @onclick="() => SelectTower(tower)"></rect>
+        }
+        @foreach (var enemy in enemySpawner.GetEnemies())
+        {
+            <rect x="@enemy.Position.X" y="@enemy.Position.Y" height="30" width="30" fill="red"></rect>
+        }
+        <polyline points="@string.Join(" ", path.Select(p => $"{p.X},{p.Y}"))" fill="none" stroke="black" />
+    </svg>
+</div>
+
+<button @onclick="StartAddingMeleeTower">Add Melee Tower</button>
+<button @onclick="StartAddingRangedTower">Add Ranged Tower</button>
+<button @onclick="StartAddingStunTower">Add Stun Tower</button>
+<button @onclick="StartAddingBombTower">Add Bomb Tower</button>
+
+@if (selectedTower != null)
+{
+    <button @onclick="DeleteSelectedTower">Delete Tower</button>
+}
+
+@code {
+    private List<Tower> towers = new List<Tower>();
+
+    private List<MeleeTower> meleeTowers = new List<MeleeTower>();
+    private List<RangedTower> rangedTowers = new List<RangedTower>();
+    private List<StunTower> stunTowers = new List<StunTower>();
+    private List<BombTower> bombTowers = new List<BombTower>();
+    private Tower currentTower = new Tower();
+    private bool isAddingTower = false;
+
+    private Tower selectedTower;
+
+    private void SelectTower(Tower tower)
+    {
+        selectedTower = tower;
+    }
+    private List<Point> path = new List<Point>
+    {
+        new Point { X = 10, Y = 40 },
+        new Point { X = 175, Y = 40 },
+        new Point { X = 175, Y = 200 },
+        new Point { X = 50, Y = 200 },
+        new Point { X = 50, Y = 400 },
+        new Point { X = 175, Y = 400 },
+        new Point { X = 175, Y = 500 },
+        new Point { X = 375, Y = 500 },
+        new Point { X = 375, Y = 200 },
+        new Point { X = 575, Y = 200 }
+    };
+    private int currentTime = 0;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            while (true)
+            {
+                await Task.Delay(1000); // Update the game state every second
+                currentTime += 1000;
+                enemySpawner.Update(currentTime, path);
+                enemySpawner.CheckMeleeCollisions(meleeTowers);
+                enemySpawner.CheckBombCollisions(bombTowers);
+                enemySpawner.CheckStunCollisions(stunTowers, currentTime);
+
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void StartAddingMeleeTower()
+    {
+        isAddingTower = true;
+        int nextId = towers.Count + 1;
+        currentTower = new MeleeTower();
+    }
+
+    private void StartAddingRangedTower()
+    {
+        isAddingTower = true;
+        int nextId = towers.Count + 1;
+        currentTower = new RangedTower();
+    }
+
+    private void StartAddingStunTower()
+    {
+        isAddingTower = true;
+        int nextId = towers.Count + 1;
+        currentTower = new StunTower();
+    }
+
+    private void StartAddingBombTower()
+    {
+        isAddingTower = true;
+        int nextId = towers.Count + 1;
+        currentTower = new BombTower();
+    }
+
+    private void UpdateTowerPosition(MouseEventArgs e)
+    {
+        if (isAddingTower)
+        {
+            currentTower.X = (int)e.ClientX;
+            currentTower.Y = (int)e.ClientY;
+        }
+    }
+
+    private void PlaceTower()
+    {
+        if (isAddingTower)
+        {
+            if (currentTower is MeleeTower)
+            {
+                meleeTowers.Add((MeleeTower)currentTower);
+            }
+            else if (currentTower is RangedTower)
+            {
+                rangedTowers.Add((RangedTower)currentTower);
+            }
+            else if (currentTower is StunTower)
+            {
+                stunTowers.Add((StunTower)currentTower);
+            }
+            else if (currentTower is BombTower)
+            {
+                bombTowers.Add((BombTower)currentTower);
+            }
+            isAddingTower = false;
+        }
+    }
+
+    private void DeleteSelectedTower()
+{
+    if (selectedTower != null)
+    {
+        if (selectedTower is MeleeTower)
+        {
+            meleeTowers.Remove((MeleeTower)selectedTower);
+        }
+        else if (selectedTower is RangedTower)
+        {
+            rangedTowers.Remove((RangedTower)selectedTower);
+        }
+        else if (selectedTower is StunTower)
+        {
+            stunTowers.Remove((StunTower)selectedTower);
+        }
+        else if (selectedTower is BombTower)
+        {
+            bombTowers.Remove((BombTower)selectedTower);
+        }
+        selectedTower = null;
+    }
+}
+}
