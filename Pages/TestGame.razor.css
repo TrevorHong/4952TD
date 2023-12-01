@@ -14,11 +14,9 @@ button {
 }
 #headingFour {
     background-color: #A6A5F9;
-    margin-bottom:200px;
 }
 #headingFive {
     background-color: #79f55a;
-    margin-top: auto;
 }
 .sidebar {
     flex: 1;
@@ -27,12 +25,6 @@ nav {
     display: flex;
     flex-direction: column;
     margin-left: auto;
-}
-
-.card-header {
-    margin-bottom: 1vh;
-    filter: drop-shadow(3px 5px 3px #000000);
-
 }
 #towers {
     text-align: center;

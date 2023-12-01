@@ -30,12 +30,57 @@
         }
         <polyline points="@string.Join(" ", path.Select(p => $"{p.X},{p.Y}"))" fill="none" stroke="black" />
     </svg>
+
+    <nav class="collapse d-lg-block sidebar right-sidebar-menu consistent-header-parent" id="navbar">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0" id="towers">
+                    Towers
+                </h5>
+            </div>
+            <div class="card-header btn btn-link collapsed">
+                <h5 class="mb-0">
+                <button @onclick="StartAddingMeleeTower" class="card-header btn btn-link collapsed" id="headingOne">
+                    Add Melee Tower
+                </button>
+                </h5>
+            </div>
+            <div class="card-header btn btn-link collapsed">
+                <h5 class="mb-0">
+                <button @onclick="StartAddingRangedTower"class="card-header btn btn-link collapsed" id="headingTwo">
+                    Add Ranged Tower
+                </button>
+            </h5>
+            </div>  
+            <div class="card-header btn btn-link collapsed">
+                <h5 class="mb-0">
+                <button @onclick="StartAddingStunTower"class="card-header btn btn-link collapsed" id="headingThree">
+                    Add Stun Tower
+                </button>
+            </h5>
+            </div>  
+            <div class="card-header btn btn-link collapsed">
+                <h5 class="mb-0" id="startbutton">
+                <button @onclick="StartAddingBombTower"class="card-header btn btn-link collapsed" id="headingFour">
+                    Add Bomb Tower
+                </button>
+            </h5>
+            </div>
+            <div class="card-header btn btn-link collapsed" id="headingFive">
+                <h5 class="mb-0" id="startbutton">
+                <button class="btn btn-link collapsed" @onclick="startButtonOnClick">
+                Start
+                </button>
+            </h5>
+            </div>    
+        </div>   
+    </nav>
 </div>
 
-<button @onclick="StartAddingMeleeTower">Add Melee Tower</button>
-<button @onclick="StartAddingRangedTower">Add Ranged Tower</button>
-<button @onclick="StartAddingStunTower">Add Stun Tower</button>
-<button @onclick="StartAddingBombTower">Add Bomb Tower</button>
+@*<button @onclick="StartAddingMeleeTower" class="card-header btn btn-link collapsed" id="headingOne">Add Melee Tower</button>
+<button @onclick="StartAddingRangedTower"class="card-header btn btn-link collapsed" id="headingTwo">Add Ranged Tower</button>
+<button @onclick="StartAddingStunTower"class="card-header btn btn-link collapsed" id="headingThree">Add Stun Tower</button>
+<button @onclick="StartAddingBombTower"class="card-header btn btn-link collapsed" id="headingFour">Add Bomb Tower</button>*@
 
 @if (selectedTower != null)
 {
@@ -75,6 +120,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+
         if (firstRender)
         {
             while (true)
@@ -123,8 +169,8 @@
     {
         if (isAddingTower)
         {
-            currentTower.X = (int)e.ClientX;
-            currentTower.Y = (int)e.ClientY;
+            currentTower.X = (int)e.ClientX - 200;
+            currentTower.Y = (int)e.ClientY - 200;
         }
     }
 
