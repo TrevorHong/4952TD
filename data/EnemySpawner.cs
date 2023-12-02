@@ -9,7 +9,12 @@ public class EnemySpawner
 
     float speed = 2.50f;
 
-    public int Currency { get; set; }
+    private int? gold;
+
+    public int Currency {
+        get => gold ?? 250;
+        set => gold = value;
+     }
 
     public List<Enemy> GetEnemies()
     {

@@ -3,7 +3,8 @@
 @inject UserService UserService
 
 <div id="gameContainer">
-    <p>Currency: @enemySpawner.Currency</p>
+    <div>Health: @enemySpawner.Currency</div>
+    <div>Currency: @enemySpawner.Currency</div>
     <svg @onmousemove="UpdateTowerPosition" @onmouseup="PlaceTower" tabindex="0" height="80vh" width="72vw">  
         @if (isAddingTower)
         {
@@ -178,10 +179,12 @@
     {
         if (isAddingTower)
         {
-            if (currentTower is MeleeTower)
+            if (currentTower is MeleeTower && enemySpawner.Currency >= 150)
             {
                 meleeTowers.Add((MeleeTower)currentTower);
                 UserService.TowerBought = UserService.TowerBought + 1;
+                enemySpawner.Currency = enemySpawner.Currency - 150;
+                UserService.GoldSpent = UserService.GoldSpent + 150;
             }
             else if (currentTower is RangedTower)
             {
