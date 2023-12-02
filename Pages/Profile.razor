@@ -1,5 +1,6 @@
 @page "/profile"
 @inject NavigationManager NavigationManager
+@inject UserService UserService
 
 <div class="section bg">
     <div class="container">
@@ -17,7 +18,7 @@
                                                 <p class="yellow-text">Damage: 0</p>
                                                 <p class="yellow-text">Highest Round: 0</p>
                                                 <p class="yellow-text">Gold Spent: 0</p>
-                                                <p class="yellow-text">Towers Bought: 0</p>
+                                                <p class="yellow-text">Towers Bought: @UserService.TowerBought</p>
                                             </div>
 				      					</div>
 			      					</div>

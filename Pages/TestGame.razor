@@ -1,5 +1,6 @@
 @page "/TestGame"
 @inject EnemySpawner enemySpawner
+@inject UserService UserService
 
 <div id="gameContainer">
     <p>Currency: @enemySpawner.Currency</p>
@@ -76,7 +77,6 @@
         </div>   
     </nav>
 </div>
-
 @*<button @onclick="StartAddingMeleeTower" class="card-header btn btn-link collapsed" id="headingOne">Add Melee Tower</button>
 <button @onclick="StartAddingRangedTower"class="card-header btn btn-link collapsed" id="headingTwo">Add Ranged Tower</button>
 <button @onclick="StartAddingStunTower"class="card-header btn btn-link collapsed" id="headingThree">Add Stun Tower</button>
@@ -181,6 +181,7 @@
             if (currentTower is MeleeTower)
             {
                 meleeTowers.Add((MeleeTower)currentTower);
+                UserService.TowerBought = UserService.TowerBought + 1;
             }
             else if (currentTower is RangedTower)
             {
