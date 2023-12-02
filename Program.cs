@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using BlazorTD.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,12 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 // builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddScoped<UserAuthentication>();
+// builder.Services.AddScoped<UserAuthentication>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddSingleton<EnemySpawner>();
 
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseMySql(connectionString,serverVersion));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -39,6 +46,7 @@ using (var scope = app.Services.CreateScope()) {
         var context = services.GetRequiredService<ApplicationDbContext>();
         context.Database.OpenConnection();
         context.Database.CloseConnection();
+        context.Database.Migrate();
         Console.WriteLine("Successfully connected to the database.");
     }
     catch (Exception ex)

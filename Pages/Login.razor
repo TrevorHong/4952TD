@@ -1,7 +1,18 @@
 @page "/login"
+@using Microsoft.AspNetCore.Identity
+@using BlazorTD.Models;
+@inject UserService UserService
 @inject NavigationManager NavigationManager
-@inject UserAuthentication UserAuth
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IJSRuntime JSRuntime
 
+@if (isLoggingIn)
+{
+    <p>Logging in...</p>
+}
+else
+{
 <div class="section bg">
     <div class="container">
 			<div class="row full-height justify-content-center">
@@ -18,12 +29,12 @@
 										<div class="section text-center">
 											<h4 class="mb-4 pb-3 yellow-text">Log In</h4>
 											<div class="form-group">
-												<input type="text" name="logname" class="form-style" placeholder="Your Username" id="logname" autocomplete="off" @bind="username">
+												<input type="text" name="logname" class="form-style" placeholder="Your Username" id="logname" autocomplete="off" @bind="loginUsername">
 											</div>	
 											<div class="form-group mt-2">
-												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off" @bind="password">
+												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off" @bind="loginPassword">
 											</div>
-											@* <a @onclick="HandleLogin" class="btn mt-4">Login</a> *@
+											<a @onclick="LoginUser" class="btn mt-4">Login</a>
                             				@* <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p> *@
 				      					</div>
 			      					</div>
@@ -41,7 +52,7 @@
 											<div class="form-group mt-2">
 												<input type="password" name="registerPassword" class="form-style" placeholder="Your Password" id="registerPassword" autocomplete="off" @bind="registerPassword">
 											</div>
-											<a class="btn mt-4">Sign up</a>
+											<a @onclick="RegisterUser" class="btn mt-4">Sign up</a>
 				      					</div>
 			      					</div>
 			      				</div>
@@ -54,8 +65,10 @@
 	</div>
 
 @code {
-    private string username;
-    private string password;
+
+	private bool isLoggingIn;
+    private string loginUsername;
+    private string loginPassword;
 
 	private string email;
 
@@ -63,36 +76,49 @@
 
 	private string registerPassword;
 
-    private void HandleRegister()
+	private async Task RegisterUser()
     {
-    if (UserAuth.IsUserExists(registerUsername))
-    {
-        // Show an error message
-    }
-    else
-    {
-        bool isRegistered = UserAuth.Register(registerUsername, registerPassword, email);
-        if (isRegistered)
+        var user = new ApplicationUser
         {
-            NavigationManager.NavigateTo("/login");
+            UserName = registerUsername,
+            Email = email
+        };
+
+        var result = await UserManager.CreateAsync(user, registerPassword);
+
+        if (result.Succeeded)
+        {
+			
+            
         }
         else
         {
-            // Show an error message
+            
         }
     }
+
+	private async Task LoginUser()
+{
+    isLoggingIn = true;
+
+    var user = await UserManager.FindByNameAsync(loginUsername);
+    if (user != null)
+    {
+        var result = await SignInManager.CheckPasswordSignInAsync(user, loginPassword, false);
+
+        if (result.Succeeded)
+        {
+            UserService.Username = loginUsername;
+            NavigationManager.NavigateTo("/mainmenu");
+        }
+        else
+        {
+            // Handle failed login
+        }
+    }
+
+    isLoggingIn = false;
 }
 
-    @* private void HandleLogin()
-    {
-        bool isLoggedIn = UserAuth.Login(username, password);
-        if (isLoggedIn)
-        {
-            NavigationManager.NavigateTo("/home");
-        }
-        else
-        {
-            // Show an error message
-        }
-    } *@
+}
 }
