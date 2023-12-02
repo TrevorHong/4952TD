@@ -45,12 +45,29 @@ else
 											<h4 class="mb-4 pb-3 yellow-text">Sign Up</h4>
 											<div class="form-group">
 												<input type="text" name="registerUsername" class="form-style" placeholder="Your Username" id="registerUsername" autocomplete="off" @bind="registerUsername">
+												@if (showValidationMessages && string.IsNullOrWhiteSpace(registerUsername))
+												{
+													<p class="text-danger">Username is required.</p>
+												}
 											</div>	
 											<div class="form-group mt-2">
 												<input type="email" name="email" class="form-style" placeholder="Your Email" id="email" autocomplete="off" @bind="email">
+                                                @if (showValidationMessages && string.IsNullOrWhiteSpace(email) || !new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(email))
+                                                {
+													<p class="text-danger">A valid email is required.</p>
+												}
 											</div>	
 											<div class="form-group mt-2">
 												<input type="password" name="registerPassword" class="form-style" placeholder="Your Password" id="registerPassword" autocomplete="off" @bind="registerPassword">
+												@if (showValidationMessages && (string.IsNullOrWhiteSpace(registerPassword) || registerPassword.Length < 6))
+												{
+													<p class="text-danger">Password is required and must be at least 6 characters long with at least one number, uppercase, lowercase and special character </p>
+												}
+
+												@if (showSuccessMessages)
+												{
+													<p class="text-success">Registeration Successful!</p>
+												}
 											</div>
 											<a @onclick="RegisterUser" class="btn mt-4">Sign up</a>
 				      					</div>
@@ -64,37 +81,51 @@ else
 	    </div>
 	</div>
 
-@code {
+    @code {
 
-	private bool isLoggingIn;
+    private bool isLoggingIn;
     private string? loginUsername;
     private string? loginPassword;
 
-	private string? email;
+    private string? email;
 
-	private string? registerUsername;
+    private string? registerUsername;
 
-	private string? registerPassword;
+    private string? registerPassword;
 
-	private async Task RegisterUser()
+	private bool showValidationMessages;
+
+	private bool showSuccessMessages;
+
+    private async Task RegisterUser()
     {
+
+		showValidationMessages = false;
+		showSuccessMessages = false;
+
         var user = new ApplicationUser
         {
             UserName = registerUsername,
             Email = email
         };
 
-		var result = await UserManager.CreateAsync(user, registerPassword ?? string.Empty);
+        if (string.IsNullOrWhiteSpace(registerUsername) || string.IsNullOrWhiteSpace(email) || !new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(email) || (string.IsNullOrWhiteSpace(registerPassword) || registerPassword.Length < 6)) {
+			showValidationMessages = true;
+		}
 
-        if (result.Succeeded)
-        {
-			
-            
-        }
-        else
-        {
-            
-        }
+		else {
+			var result = await UserManager.CreateAsync(user, registerPassword ?? string.Empty);
+
+				if (result.Succeeded)
+				{
+					showSuccessMessages = true;
+				}
+				else
+				{
+					
+				}
+		}
+
     }
 
 	private async Task LoginUser()
