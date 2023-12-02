@@ -1,4 +1,4 @@
 public class UserService
 {
-    public string Username { get; set; }
+    public string? Username { get; set; }
 }

@@ -67,14 +67,14 @@ else
 @code {
 
 	private bool isLoggingIn;
-    private string loginUsername;
-    private string loginPassword;
+    private string? loginUsername;
+    private string? loginPassword;
 
-	private string email;
+	private string? email;
 
-	private string registerUsername;
+	private string? registerUsername;
 
-	private string registerPassword;
+	private string? registerPassword;
 
 	private async Task RegisterUser()
     {
@@ -84,7 +84,7 @@ else
             Email = email
         };
 
-        var result = await UserManager.CreateAsync(user, registerPassword);
+		var result = await UserManager.CreateAsync(user, registerPassword ?? string.Empty);
 
         if (result.Succeeded)
         {

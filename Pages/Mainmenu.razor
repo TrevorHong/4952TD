@@ -48,13 +48,4 @@
     {
         NavigationManager.NavigateTo("/login");
     }
-
-    private string username;
-
-    protected override void OnInitialized()
-    {
-        var uri = new Uri(NavigationManager.Uri);
-        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-        username = query["username"];
-    }
 }

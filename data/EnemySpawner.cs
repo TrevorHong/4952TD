@@ -38,8 +38,10 @@ public class EnemySpawner
         if (enemy.PathIndex < path.Count)
         {
             var nextPosition = path[enemy.PathIndex];
-            var dx = nextPosition.X - enemy.Position.X;
-            var dy = nextPosition.Y - enemy.Position.Y;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                var dx = nextPosition.X - enemy.Position.X;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                var dy = nextPosition.Y - enemy.Position.Y;
             var distance = Math.Sqrt(dx * dx + dy * dy);
             if (distance <= enemy.Speed)
             {
@@ -70,8 +72,10 @@ public void CheckMeleeCollisions(List<MeleeTower> meleeTowers)
         var enemy = enemies[i];
         foreach (var tower in meleeTowers)
         {
-            var dx = tower.X - enemy.Position.X;
-            var dy = tower.Y - enemy.Position.Y;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                var dx = tower.X - enemy.Position.X;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                var dy = tower.Y - enemy.Position.Y;
             var distance = Math.Sqrt(dx * dx + dy * dy);
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
@@ -91,8 +95,10 @@ public void CheckBombCollisions(List<BombTower> bombTowers)
         for (int j = bombTowers.Count - 1; j >= 0; j--)
         {
             var tower = bombTowers[j];
-            var dx = tower.X - enemy.Position.X;
-            var dy = tower.Y - enemy.Position.Y;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                var dx = tower.X - enemy.Position.X;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                var dy = tower.Y - enemy.Position.Y;
             var distance = Math.Sqrt(dx * dx + dy * dy);
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
@@ -112,8 +118,10 @@ public void CheckStunCollisions(List<StunTower> stunTowers, int currentTime)
         var enemy = enemies[i];
         foreach (var tower in stunTowers)
         {
-            var dx = tower.X - enemy.Position.X;
-            var dy = tower.Y - enemy.Position.Y;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                var dx = tower.X - enemy.Position.X;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                var dy = tower.Y - enemy.Position.Y;
             var distance = Math.Sqrt(dx * dx + dy * dy);
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
