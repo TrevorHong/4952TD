@@ -20,13 +20,13 @@ public class EnemySpawner
 
     public int? TotalHealth {
         get => health ?? 100;
-        set => health = value;
-    }
+        set {
 
-    public bool GameState {
-        get; set;
+            if(value.HasValue) {
+                health = Math.Max(value.Value, 0);
+            }
+        }
     }
-
     public List<Enemy> GetEnemies()
     {
         return enemies;
@@ -68,11 +68,7 @@ public class EnemySpawner
                 }
                 else
                 {
-                    if(TotalHealth <= 0) {
-                        GameState = false;
-                    } else {
-                        TotalHealth = TotalHealth - 10;
-                    }
+                    TotalHealth = TotalHealth - 1;
                     enemies.RemoveAt(i); // Remove the enemy when it reaches the last point
                     
                 }
