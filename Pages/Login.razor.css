@@ -8,6 +8,10 @@ body{
 	overflow-x: hidden;
 }
 
+.text-danger {
+  color: #ff3333; /* A brighter shade of red */
+}
+
 .input-with-icon {
     position: relative;
 }

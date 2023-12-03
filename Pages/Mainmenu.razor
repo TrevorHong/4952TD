@@ -20,7 +20,7 @@
                                 <p><button type="button" class="btn btn mb-2" @onclick="goToGame">Start Game</button></p>
                                 <p><button type="button" class="btn btn mb-2" @onclick="goToProfile">Your Profile</button></p>
                                 <p><button type="button" class="btn btn mb-2" @onclick="goToLeaderboard">Leaderboard</button></p>
-                                <p><button type="button" class="btn btn mb-2" @onclick="goToLogin">Log out</button></p>
+                                <p><button type="button" class="btn btn mb-2" @onclick="Logout">Log out</button></p>
                             </div>
                         </div>
                     </div>
@@ -32,6 +32,12 @@
 
 
 @code {
+
+    private async Task Logout()
+    {
+        UserService.Username = null;
+        NavigationManager.NavigateTo("/login");
+    }
     private void goToLeaderboard()
     {
         NavigationManager.NavigateTo("/leaderboard");
@@ -43,9 +49,5 @@
     private void goToProfile()
     {
         NavigationManager.NavigateTo("/profile");
-    }
-    private void goToLogin()
-    {
-        NavigationManager.NavigateTo("/login");
     }
 }
