@@ -13,6 +13,12 @@ public class EnemySpawner
 
     private int? gold;
 
+    public int? enemy;
+
+    public int enemyCounter {
+        get => enemy ?? 0;
+        set => enemy = value;
+    }
     public int Currency {
         get => gold ?? 250;
         set => gold = value;
@@ -98,6 +104,7 @@ public void CheckMeleeCollisions(List<MeleeTower> meleeTowers)
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
                 enemies.RemoveAt(i);
+                enemyCounter += 1;
                 Currency += 5;
                 break;
             }

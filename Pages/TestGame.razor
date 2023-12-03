@@ -8,9 +8,11 @@
 
         @code {
             protected override void OnInitialized() {
-                Task.Delay(5000).ContinueWith(_ =>
+                if(enemySpawner.TotalHealth <= 0) {
+                    Task.Delay(5000).ContinueWith(_ =>
                     NavigationManager.NavigateTo("/mainmenu")
                 );
+                }
             }
 
         }
