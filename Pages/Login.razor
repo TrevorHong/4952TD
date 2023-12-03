@@ -165,6 +165,7 @@ private async Task LoginUser()
             if (result.Succeeded)
             {
                 UserService.Username = loginUsername;
+				UserService.GoldSpent = user.GoldSpent;
                 NavigationManager.NavigateTo("/mainmenu");
             }
             else
