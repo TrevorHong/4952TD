@@ -1,9 +1,10 @@
 @page "/TestGame"
 @inject EnemySpawner enemySpawner
 @inject UserService UserService
+@inject NavigationManager NavigationManager
 
 <div id="gameContainer">
-    <div>Health: @enemySpawner.Currency</div>
+    <div>Health: @enemySpawner.TotalHealth</div>
     <div>Currency: @enemySpawner.Currency</div>
     <svg @onmousemove="UpdateTowerPosition" @onmouseup="PlaceTower" tabindex="0" height="80vh" width="72vw">  
         @if (isAddingTower)
@@ -77,6 +78,10 @@
             </div>    
         </div>   
     </nav>
+
+    @if(enemySpawner.GameState == false) {
+        //Redirect();
+    }
 </div>
 @*<button @onclick="StartAddingMeleeTower" class="card-header btn btn-link collapsed" id="headingOne">Add Melee Tower</button>
 <button @onclick="StartAddingRangedTower"class="card-header btn btn-link collapsed" id="headingTwo">Add Ranged Tower</button>
@@ -225,4 +230,7 @@
         selectedTower = null;
     }
 }
+    private void Redirect() {
+        NavigationManager.NavigateTo("/mainmenu");
+    }
 }

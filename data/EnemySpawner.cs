@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using BlazorServerApp.Pages;
 public class EnemySpawner
 {
     private List<Enemy> enemies = new List<Enemy>();
@@ -9,12 +9,23 @@ public class EnemySpawner
 
     float speed = 2.50f;
 
+    private int? health;
+
     private int? gold;
 
     public int Currency {
         get => gold ?? 250;
         set => gold = value;
      }
+
+    public int? TotalHealth {
+        get => health ?? 100;
+        set => health = value;
+    }
+
+    public bool GameState {
+        get; set;
+    }
 
     public List<Enemy> GetEnemies()
     {
@@ -57,7 +68,13 @@ public class EnemySpawner
                 }
                 else
                 {
+                    if(TotalHealth <= 0) {
+                        GameState = false;
+                    } else {
+                        TotalHealth = TotalHealth - 10;
+                    }
                     enemies.RemoveAt(i); // Remove the enemy when it reaches the last point
+                    
                 }
             }
             else
