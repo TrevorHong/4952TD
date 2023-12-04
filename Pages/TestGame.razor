@@ -190,9 +190,9 @@
 
                 if(enemySpawner.gameState) {
                     UserService.TowerBought = UserService.TowerBought + 1;
-                    enemySpawner.Currency = enemySpawner.Currency - 150;
                     UserService.GoldSpent = UserService.GoldSpent + 150;
                 }
+                enemySpawner.Currency = enemySpawner.Currency - 150;
             }
             else if (currentTower is RangedTower)
             {
