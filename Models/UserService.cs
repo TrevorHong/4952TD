@@ -15,7 +15,7 @@ public class UserService
 
     private readonly ApplicationDbContext _context;
 
-    private readonly object lockObject = new object();
+    private readonly object UpdateLock = new object();
 
     public UserService(ApplicationDbContext context)
     {
@@ -27,21 +27,41 @@ public class UserService
         set
         {
             totalGold = value;
-            lock (lockObject)
+            lock (UpdateLock)
             {
                 _ = UpdateGoldSpentInDatabaseAsync();
+                _ = UpdateTowerBoughtInDatabaseAsync();
+                _ = UpdateEnemyCounterInDatabaseAsync();
             }
         }
       }
 
     public int? TowerBought {
         get => towerBought ?? 0;
-        set => towerBought = value;
+        set
+        {
+            towerBought = value;
+            lock (UpdateLock)
+            {
+                _ = UpdateGoldSpentInDatabaseAsync();
+                _ = UpdateTowerBoughtInDatabaseAsync();
+                _ = UpdateEnemyCounterInDatabaseAsync();
+            }
+        }
     }
 
-    public int? enemyCounter {
+    public int? EnemyCounter {
         get => enemy ?? 0;
-        set => enemy = value;
+        set
+        {
+            enemy = value;
+            lock (UpdateLock)
+            {
+                _ = UpdateGoldSpentInDatabaseAsync();
+                _ = UpdateTowerBoughtInDatabaseAsync();
+                _ = UpdateEnemyCounterInDatabaseAsync();
+            }
+        }
     }
 
 private async Task UpdateGoldSpentInDatabaseAsync()
@@ -50,6 +70,28 @@ private async Task UpdateGoldSpentInDatabaseAsync()
     if (user != null)
     {
         user.GoldSpent = totalGold; // Set GoldSpent
+        _context.Users.Update(user); // Track changes
+        await _context.SaveChangesAsync(); // Save changes
+    }
+}
+
+private async Task UpdateTowerBoughtInDatabaseAsync()
+{
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == Username);
+    if (user != null)
+    {
+        user.TowerBought = towerBought; // Set TowerBought
+        _context.Users.Update(user); // Track changes
+        await _context.SaveChangesAsync(); // Save changes
+    }
+}
+
+private async Task UpdateEnemyCounterInDatabaseAsync()
+{
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == Username);
+    if (user != null)
+    {
+        user.EnemyCounter = enemy; // Set EnemyCounter
         _context.Users.Update(user); // Track changes
         await _context.SaveChangesAsync(); // Save changes
     }
