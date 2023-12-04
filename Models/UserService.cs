@@ -13,8 +13,6 @@ public class UserService
 
     public string? Username { get; set; }
 
-    public int? EnemiesKilled { get; set; }
-
     private readonly ApplicationDbContext _context;
 
     private readonly object lockObject = new object();

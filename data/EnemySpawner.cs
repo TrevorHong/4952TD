@@ -12,12 +12,27 @@ public partial class EnemySpawner
     private int? health;
 
     private int? gold;
+
+    public int? enemy;
+
+    private readonly UserService _userService;
+
+    public EnemySpawner(UserService userService)
+    {
+        _userService = userService;
+    }
     public int Currency {
         get => gold ?? 250;
         set => gold = value;
      }
-    public int? enemyTotal {
-        get; set;
+    public int enemyCounter
+    {
+        get => enemy ?? 0;
+        set
+        {
+            enemy = value;
+            _userService.enemyCounter = enemyCounter;
+        }
     }
 
     public int? TotalHealth {
@@ -100,7 +115,7 @@ public void CheckMeleeCollisions(List<MeleeTower> meleeTowers)
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
                 enemies.RemoveAt(i);
-                enemyTotal += 1;
+                enemyCounter += 1;
                 Currency += 5;
                 break;
             }

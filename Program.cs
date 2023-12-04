@@ -10,7 +10,8 @@ builder.Services.AddServerSideBlazor();
 // builder.Services.AddSingleton<WeatherForecastService>();
 // builder.Services.AddScoped<UserAuthentication>();
 builder.Services.AddScoped<UserService>();
-builder.Services.AddSingleton<EnemySpawner>();
+builder.Services.AddScoped<EnemySpawner>();
+
 
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
