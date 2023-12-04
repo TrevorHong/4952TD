@@ -1,5 +1,8 @@
 @page "/leaderboard"
+@using Microsoft.EntityFrameworkCore
 @inject NavigationManager NavigationManager
+@inject ApplicationDbContext _context
+@using BlazorTD.Models
 
 <div class="section bg">
     <div class="container">
@@ -22,64 +25,23 @@
                                             <tr>
                                                 <th class="yellow-text">Username</th>
                                                 <th class="yellow-text">Score</th>
-                                                @* <th class="yellow-text">Temp. (F)</th>
-                                                <th class="yellow-text">Summary</th> *@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @* @foreach (var forecast in forecasts)
+                                            @if (TopUsers != null)
                                             {
-                                                <tr>
-                                                    <td>@forecast.Date.ToShortDateString()</td>
-                                                    <td>@forecast.TemperatureC</td>
-                                                    <td>@forecast.TemperatureF</td>
-                                                    <td>@forecast.Summary</td>
-                                                </tr>
-                                            } *@
-                                            <tr>
-                                                <td>Player 1</td>
-                                                <td>100</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 2</td>
-                                                <td>90</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 3</td>
-                                                <td>80</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 4</td>
-                                                <td>70</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 5</td>
-                                                <td>60</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 6</td>
-                                                <td>50</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 7</td>
-                                                <td>40</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 8</td>
-                                                <td>30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 9</td>
-                                                <td>20</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Player 10</td>
-                                                <td>10</td>
-                                            </tr>
+                                                @foreach (var user in TopUsers)
+                                                {
+                                                    <tr>
+                                                        <td>@user.UserName</td>
+                                                        <td>@user.EnemyCounter</td>
+                                                    </tr>
+                                                }
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
-                            }
+                            
                         </div>
                     </div>
                 </div>
@@ -88,8 +50,36 @@
     </div>
 
 @code {
+    private List<ApplicationUser> TopUsers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (_context != null)
+        {
+            TopUsers = await GetTopUsers();
+        }
+    }
+
+    private async Task<List<ApplicationUser>> GetTopUsers()
+    {
+        if (_context.Users != null)
+        {
+            return await _context.Users
+                .OrderByDescending(u => u.EnemyCounter)
+                .Take(10)
+                .ToListAsync();
+        }
+        else
+        {
+            return new List<ApplicationUser>();
+        }
+    }
+
     private void goToMainMenu()
     {
-        NavigationManager.NavigateTo("/mainmenu");
+        if (NavigationManager != null)
+        {
+            NavigationManager.NavigateTo("/mainmenu");
+        }
     }
 }
