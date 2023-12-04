@@ -46,3 +46,8 @@ svg {
     height: 50px;
     background-color: blue;
 }
+
+#gameover {
+    outline: 2px solid red;
+    background-color: #F9A5A5;
+}

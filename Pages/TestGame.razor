@@ -2,9 +2,11 @@
 @inject EnemySpawner enemySpawner
 @inject UserService UserService
 @inject NavigationManager NavigationManager
-<button>Main menu</button>
     @if(enemySpawner.TotalHealth <= 0) {
-        <div id="Game Over">Game Over! Your score will stop counting from here.</div>
+        <div id="gameover">Game Over! Your score will stop counting from here. Click here to return to the main menu and reset
+            <button class="card-header btn btn-link collapsed" @onclick="Reset">Reset</button>
+        </div>
+        enemySpawner.gameState = false;
     }
 <div id="gameContainer">
     <div>Health: @enemySpawner.TotalHealth</div>
@@ -74,9 +76,9 @@
             </div>
             <div class="card-header btn btn-link collapsed" id="headingFive">
                 <h5 class="mb-0" id="startbutton">
-                @* <button class="btn btn-link collapsed" @onclick="startButtonOnClick"> *@
+                <button class="btn btn-link collapsed" @onclick="Start">
                 Start
-                @* </button> *@
+                </button>
             </h5>
             </div>    
         </div>   
@@ -93,7 +95,6 @@
 }
 
 @code {
-
     private List<Tower> towers = new List<Tower>();
 
     private List<MeleeTower> meleeTowers = new List<MeleeTower>();
@@ -186,9 +187,12 @@
             if (currentTower is MeleeTower && enemySpawner.Currency >= 150)
             {
                 meleeTowers.Add((MeleeTower)currentTower);
-                UserService.TowerBought = UserService.TowerBought + 1;
-                enemySpawner.Currency = enemySpawner.Currency - 150;
-                UserService.GoldSpent = UserService.GoldSpent + 150;
+
+                if(enemySpawner.gameState) {
+                    UserService.TowerBought = UserService.TowerBought + 1;
+                    enemySpawner.Currency = enemySpawner.Currency - 150;
+                    UserService.GoldSpent = UserService.GoldSpent + 150;
+                }
             }
             else if (currentTower is RangedTower)
             {
@@ -228,4 +232,13 @@
         selectedTower = null;
     }
 }
+    private void Reset() {
+        enemySpawner.Currency = 250;
+        enemySpawner.TotalHealth = 100;
+        NavigationManager.NavigateTo("/mainmenu");
+    }
+
+    private void Start() {
+        enemySpawner.gameState = true;
+    }
 }
