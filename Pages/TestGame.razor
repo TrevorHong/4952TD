@@ -2,6 +2,10 @@
 @inject EnemySpawner enemySpawner
 @inject UserService UserService
 @inject NavigationManager NavigationManager
+
+
+@*This is the game, where the playear lands when clicking on the start game on the main menu page*@
+
     @if(enemySpawner.TotalHealth <= 0) {
         <div id="gameover">Game Over! Your score will stop counting from here. Click here to return to the main menu and reset
             <button class="card-header btn btn-link collapsed" @onclick="Reset">Reset</button>
