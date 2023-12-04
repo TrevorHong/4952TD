@@ -8,6 +8,9 @@ public class UserService
     private int? towerBought;
 
     private int? totalGold;
+
+    public int? enemy;
+
     public string? Username { get; set; }
 
     public int? EnemiesKilled { get; set; }
@@ -36,6 +39,11 @@ public class UserService
     public int? TowerBought {
         get => towerBought ?? 0;
         set => towerBought = value;
+    }
+
+    public int? enemyCounter {
+        get => enemy ?? 0;
+        set => enemy = value;
     }
 
 private async Task UpdateGoldSpentInDatabaseAsync()

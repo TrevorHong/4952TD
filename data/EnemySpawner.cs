@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorServerApp.Pages;
-public class EnemySpawner
+public partial class EnemySpawner
 {
     private List<Enemy> enemies = new List<Enemy>();
     private int spawnInterval = 5000; // Spawn an enemy every 5 seconds
@@ -12,17 +12,13 @@ public class EnemySpawner
     private int? health;
 
     private int? gold;
-
-    public int? enemy;
-
-    public int enemyCounter {
-        get => enemy ?? 0;
-        set => enemy = value;
-    }
     public int Currency {
         get => gold ?? 250;
         set => gold = value;
      }
+    public int? enemyTotal {
+        get; set;
+    }
 
     public int? TotalHealth {
         get => health ?? 100;
@@ -74,7 +70,7 @@ public class EnemySpawner
                 }
                 else
                 {
-                    TotalHealth = TotalHealth - 1;
+                    TotalHealth = TotalHealth - 100;
                     enemies.RemoveAt(i); // Remove the enemy when it reaches the last point
                     
                 }
@@ -104,7 +100,7 @@ public void CheckMeleeCollisions(List<MeleeTower> meleeTowers)
             if (distance < 50) // Assuming the size of the tower and enemy is 50
             {
                 enemies.RemoveAt(i);
-                enemyCounter += 1;
+                enemyTotal += 1;
                 Currency += 5;
                 break;
             }

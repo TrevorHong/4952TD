@@ -2,20 +2,9 @@
 @inject EnemySpawner enemySpawner
 @inject UserService UserService
 @inject NavigationManager NavigationManager
-
+<button>Main menu</button>
     @if(enemySpawner.TotalHealth <= 0) {
-        <div>Game Over! You will be redirected to the main menu in 5 seconds</div>
-
-        @code {
-            protected override void OnInitialized() {
-                if(enemySpawner.TotalHealth <= 0) {
-                    Task.Delay(5000).ContinueWith(_ =>
-                    NavigationManager.NavigateTo("/mainmenu")
-                );
-                }
-            }
-
-        }
+        <div id="Game Over">Game Over! Your score will stop counting from here.</div>
     }
 <div id="gameContainer">
     <div>Health: @enemySpawner.TotalHealth</div>
@@ -113,7 +102,7 @@
     private List<BombTower> bombTowers = new List<BombTower>();
     private Tower currentTower = new Tower();
     private bool isAddingTower = false;
-    private Tower selectedTower;
+    private Tower? selectedTower;
 
     private void SelectTower(Tower tower)
     {
@@ -216,7 +205,6 @@
             isAddingTower = false;
         }
     }
-
     private void DeleteSelectedTower()
 {
     if (selectedTower != null)
