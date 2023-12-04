@@ -1,7 +1,6 @@
 @page "/profile"
 @inject NavigationManager NavigationManager
 @inject UserService UserService
-@inject EnemySpawner EnemyCounter
 
 <div class="section bg">
     <div class="container">
@@ -16,8 +15,7 @@
 										<div class="section text-center">
                                             <div class="card-body">
                                                 <h1 class="yellow-text">@UserService.Username</h1>
-                                                <p class="yellow-text">Enemies Defeated: @UserService.enemyCounter</p>
-                                                <p class="yellow-text">Highest Round: 0</p>
+                                                <p class="yellow-text">Enemies Defeated: @UserService.EnemyCounter</p>
                                                 <p class="yellow-text">Gold Spent: @UserService.GoldSpent</p>
                                                 <p class="yellow-text">Towers Bought: @UserService.TowerBought</p>
                                             </div>

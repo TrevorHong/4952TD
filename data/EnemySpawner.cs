@@ -32,7 +32,7 @@ public partial class EnemySpawner
         set
         {
             enemy = value;
-            _userService.enemyCounter = enemyCounter;
+            _userService.EnemyCounter = _userService.EnemyCounter + enemyCounter;
         }
     }
 
