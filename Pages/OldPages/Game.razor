@@ -1,10 +1,8 @@
-@page "/Game"
-
-<PageTitle>Index</PageTitle>
+@*<PageTitle>Index</PageTitle>*@
 
 @*This was kept here as an old version of the project, contains code made for the medium fidelity. The real game is made in TestGame.razor. This still contains useful functionality that could not be included in the final project
 such as the movement interpolation code*@
-<div id="gameContainer" @onclick="GenerateNewObject">
+@*<div id="gameContainer" @onclick="GenerateNewObject">
     <svg tabindex="0" height="80vh" width="72vw" @onmousemove="MouseMoved">
         <rect x="@x" y="@y" height="50" width="50"></rect>
         @foreach (var gameObj in objects)
@@ -83,12 +81,12 @@ such as the movement interpolation code*@
     float factor = 0.01f;
 
     float speed = 0.005f;
-    System.Threading.Timer? timer;
+    System.Threading.Timer? timer;*@
 
     @* protected override void OnInitialized() {
         timer = new System.Threading.Timer(MoveAutomatically, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1));
     } *@
-    void MoveAutomatically(object? state) {
+    @*void MoveAutomatically(object? state) {
 
         Task.Run(() => {
 
@@ -146,4 +144,4 @@ such as the movement interpolation code*@
         objects.Add(newObject);
         StateHasChanged();
     }
-}
+}*@
