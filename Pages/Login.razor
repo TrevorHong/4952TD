@@ -81,6 +81,10 @@ else
 												{
 													<p class="text-success">Registeration Successful!</p>
 												}
+												@if (showRegistrationMessages)
+												{
+													<p class="text-danger">Username is already taken. Please choose another username.</p>
+												}
 											</div>
 											<a @onclick="RegisterUser" class="btn mt-4">Sign up</a>
 				      					</div>
@@ -114,12 +118,15 @@ else
 
 	private bool showLoginMessages;
 
+	private bool showRegistrationMessages;
+
     private async Task RegisterUser()
     {
 
 		showValidationMessages = false;
 		showSuccessMessages = false;
 		showLoginMessages = false;
+		showRegistrationMessages = false;
 
 		var user = new ApplicationUser
         {
@@ -131,19 +138,25 @@ else
 			showValidationMessages = true;
 		}
 
-		else {
+		else 
+    {
+        // Check if the username already exists
+        var existingUser = await UserManager.FindByNameAsync(registerUsername);
+        if (existingUser != null)
+        {
+            showRegistrationMessages = true;
+        }
 
-			var result = await UserManager.CreateAsync(user, registerPassword ?? string.Empty);
+        var result = await UserManager.CreateAsync(user, registerPassword ?? string.Empty);
 
-				if (result.Succeeded)
-				{
-					showSuccessMessages = true;
-				}
-				else
-				{
-					
-				}
-		}
+        if (result.Succeeded)
+        {
+            showSuccessMessages = true;
+        }
+        else
+        {
+        }
+    }
 
     }
 
