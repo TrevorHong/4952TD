@@ -90,7 +90,7 @@ public partial class EnemySpawner
                 }
                 else
                 {
-                    TotalHealth = TotalHealth - 100;
+                    TotalHealth = TotalHealth - 20;
                     enemies.RemoveAt(i); // Remove the enemy when it reaches the last point
                     
                 }
