@@ -239,10 +239,13 @@
     private void Reset() {
         enemySpawner.Currency = 250;
         enemySpawner.TotalHealth = 100;
+        enemySpawner.gameState = 0;
         NavigationManager.NavigateTo("/mainmenu");
     }
 
     private void Start() {
-        enemySpawner.gameState = 1;
+        if(enemySpawner.gameState != 2) {
+            enemySpawner.gameState = 1;
+        }
     }
 }
