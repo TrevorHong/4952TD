@@ -10,7 +10,7 @@
         <div id="gameover">Game Over! Your score will stop counting from here. Click here to return to the main menu and reset
             <button class="card-header btn btn-link collapsed" @onclick="Reset">Reset</button>
         </div>
-        enemySpawner.gameState = false;
+        enemySpawner.gameState = 2;
     }
 <div id="gameContainer">
     <div>Health: @enemySpawner.TotalHealth</div>
@@ -192,7 +192,7 @@
             {
                 meleeTowers.Add((MeleeTower)currentTower);
 
-                if(enemySpawner.gameState) {
+                if(enemySpawner.gameState < 2) {
                     UserService.TowerBought = UserService.TowerBought + 1;
                     UserService.GoldSpent = UserService.GoldSpent + 150;
                 }
@@ -243,6 +243,6 @@
     }
 
     private void Start() {
-        enemySpawner.gameState = true;
+        enemySpawner.gameState = 1;
     }
 }

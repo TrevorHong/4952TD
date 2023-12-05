@@ -7,7 +7,7 @@ public partial class EnemySpawner
     private int spawnInterval = 5000; // Spawn an enemy every 5 seconds
     private int lastSpawnTime = 0;
 
-    public bool gameState = false;
+    public int gameState = 0;
     float speed = 2.50f;
 
     private int? health;
@@ -59,7 +59,7 @@ public partial class EnemySpawner
             lastSpawnTime = currentTime;
         }
 
-        if(gameState) {
+        if(gameState != 0) {
             MoveEnemies(path);
         } else {
             enemies.Clear();
