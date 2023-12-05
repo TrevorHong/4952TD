@@ -120,6 +120,7 @@ else
 
 	private bool showRegistrationMessages;
 
+	// Method to register a user and check if the username already exists or checks the validation of the inputs
     private async Task RegisterUser()
     {
 
@@ -134,19 +135,21 @@ else
             Email = email
         };
 
+		// Check if the inputs are valid or if it is empty, show the validation messages
         if (string.IsNullOrWhiteSpace(registerUsername) || string.IsNullOrWhiteSpace(email) || !new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(email) || (string.IsNullOrWhiteSpace(registerPassword) || registerPassword.Length < 6)) {
 			showValidationMessages = true;
 		}
 
 		else 
     {
-        // Check if the username already exists
+        // Check if the username already exists and if it does, show the registration messages saying username is taken
         var existingUser = await UserManager.FindByNameAsync(registerUsername);
         if (existingUser != null)
         {
             showRegistrationMessages = true;
         }
 
+		// If the username is not taken, create the user and show the success messages
         var result = await UserManager.CreateAsync(user, registerPassword ?? string.Empty);
 
         if (result.Succeeded)
@@ -160,8 +163,10 @@ else
 
     }
 
+// Method to login a user and check if the username and password is correct
 private async Task LoginUser()
-{
+{	
+	// Check if the username and password is empty and if it is, show the login validation messages
     if (string.IsNullOrWhiteSpace(loginUsername) || string.IsNullOrWhiteSpace(loginPassword))
     {
         showLoginValidationMessages = true;
@@ -170,6 +175,7 @@ private async Task LoginUser()
     {
         isLoggingIn = true;
 
+		// Check if the username and password is correct and if it is, navigate to the main menu with the stats pass to the main menu
         var user = await UserManager.FindByNameAsync(loginUsername);
 
         if (user != null)

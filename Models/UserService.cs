@@ -64,6 +64,7 @@ public class UserService
         }
     }
 
+// Updates the GoldSpent in the database
 private async Task UpdateGoldSpentInDatabaseAsync()
 {
     var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == Username);
@@ -75,6 +76,7 @@ private async Task UpdateGoldSpentInDatabaseAsync()
     }
 }
 
+// Updates the TowerBought in the database
 private async Task UpdateTowerBoughtInDatabaseAsync()
 {
     var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == Username);
@@ -86,6 +88,7 @@ private async Task UpdateTowerBoughtInDatabaseAsync()
     }
 }
 
+// Updates the EnemyCounter in the database
 private async Task UpdateEnemyCounterInDatabaseAsync()
 {
     var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == Username);

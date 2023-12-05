@@ -60,6 +60,7 @@
         }
     }
 
+    // Get the tops 10 users from the database and sort it from highest to lowest by enemyCounter
     private async Task<List<ApplicationUser>> GetTopUsers()
     {
         if (_context.Users != null)
